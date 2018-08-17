@@ -271,7 +271,7 @@ function safelyChangeDay(days){
 function useGodsHand(){
 	if(gp_store.state.godsHand<3) warning(app,'上帝之手能量不足');
 	else {
-		if(gp_store.state.doomsdayBegin+1>=21) { // 直接获胜
+		if(gp_store.state.doomsdayBegin+1>21) { // 直接获胜
 			success(app,'你阻止了末日的到来！');
 			gp_store.commit('setEngineStarted',true); // 等同于启动引擎获胜
 			return gameEnd(true);
