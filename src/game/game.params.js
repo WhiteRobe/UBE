@@ -70,7 +70,7 @@ const gp_store = new Vuex.Store({
 		incToday : (state,n) => state.today+n<21?state.today+=n:state.today=21,
 		incTrash : (state,n) => state.trash+n<10?state.trash+=n:state.trash=10,
 		incPerfectSearchSum : (state,n) => state.perfectSearchSum+=n,
-		setEngineStarted: (state,b) => state.engineStarted,
+		setEngineStarted: (state,b) => state.engineStarted=b,
 		
 		incConnectPoiontLead : (state,n) => state.connectPoiontLead+=n,
 		incConnectPoiontSilica : (state,n) => state.connectPoiontSilica+=n,
