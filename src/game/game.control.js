@@ -199,7 +199,7 @@ function gotoWorkShop(){
 // 从冒险中回到地图
 function goBackMap(){
 	var wilderness = gp_store.state.viewWilderness.wilderness;
-	wilderness.resetArea();
+	wilderness.step=0;
 	gp_store.commit('viewWilderness/rstParams');
 	gp_store.commit('viewBattle/rstParams');
 	gotoMap();
@@ -209,7 +209,7 @@ function goBackMap(){
 // 从冒险中回到工作室
 function goBackWorkShop(){
 	var wilderness = gp_store.state.viewWilderness.wilderness;
-	wilderness.resetArea();
+	wilderness.step=0;
 	gp_store.commit('viewWilderness/rstParams');
 	gp_store.commit('viewBattle/rstParams');
 	gotoWorkShop();
