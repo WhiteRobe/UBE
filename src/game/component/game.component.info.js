@@ -576,7 +576,7 @@ const InfoNav = {
 					</span>\
 				</Tooltip >\
 				<Divider type="vertical"/>\
-				<Dropdown @on-click="mySelectItem" ><!--trigger="click"-->\
+				<Dropdown @on-click="mySelectItem" trigger="click"><!--trigger="click"-->\
 					<a href="javascript:void(0)">\
 						<span v-show="!isCollapseMenu"><Icon type="ios-settings" />设置</span>\
 						<Icon type="ios-arrow-down"/>\
