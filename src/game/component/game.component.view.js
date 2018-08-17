@@ -1027,9 +1027,9 @@ const ViewWorkshop = {
 			if(allCharged){
 				if(getComponentNum(name)<1) warning(app,'组件['+name+']不足!');
 				else if(inventory.state.tre_record){ // 远古记事, 自动启动
-					info(app,TREASURE_NAME[0]+'生效, 装置已自动连接!');
+					info(app,TREASURE_NAME[5]+'生效, 装置已自动连接!');
 					consumeComponent(name);
-					gp_store.dispatch('setConnectItemPoint',[itemName,1]); // 连接点为1
+					gp_store.dispatch('setConnectItemPoint',[name,1]); // 连接点为1
 					connectConstructDone(name);
 				} else connectConstruct(name);
 			} 
