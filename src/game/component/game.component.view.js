@@ -3,8 +3,7 @@ const ViewWelcome = {
 	data() {
 		return {
 			GAMEPHASE : GAMEPHASE,
-			timeRelease : '2018/8/17',
-			alreadyPlayed : new Date()
+			timeRelease : '2018/8/17'
 		}
 	},
 	computed:{
@@ -51,7 +50,6 @@ const ViewWelcome = {
 			<Divider>Created  by <a href="https://blog.csdn.net/shenpibaipao" target="_blank">@身披白袍</a></Divider>\
 			<span v-if="debug">\
 				游戏发布于-<Tag><Time :time="timeRelease" :interval="1" /></Tag>\
-				您开始游玩-<Tag><Time :time="alreadyPlayed" :interval="1" /></Tag>\
 			</span>\
 		</div>'
 };
@@ -59,6 +57,8 @@ const ViewWelcome = {
 // 冒险界面
 const ViewWilderness = {
 	computed:{
+		seal_used : () => gp_store.state.seal_used,
+		charge_con_seal : () => gp_store.state.charge_con_seal,
 		wilderness : ()=> gp_store.state.viewWilderness.wilderness,
 		tre_moonlace : ()=> inventory.state.tre_moonlace, // 月光荧丝 跳过战斗
 		tool_rod : ()=>  gp_store.state.tool_rod,
@@ -130,6 +130,9 @@ const ViewWilderness = {
 			if(w.events.indexOf(EVENT_LIST[2])!=-1) adj-=10; // 好运气
 			if(this.toolRodUsed) adj-=100;
 			return adj;
+		},
+		sealColor(){
+			return !this.seal_used?"#19be6b":"#ed4014";
 		}
 	},
 	methods:{
@@ -138,6 +141,12 @@ const ViewWilderness = {
 			gp_store.commit('viewWilderness/setToolRodUsed',true);
 			gp_store.commit('setRod',false);
 			info(app,TOOL_NAME[2]+':'+getToolDetail(TOOL_NAME[2]));
+		},
+		useSealCleanAllEvent(){
+			if(this.seal_used) return warning(app,'平衡印章已使用过！');
+			success(app,'使用平衡印章清除了所有事件！');
+			gp_store.commit('setSealUsed',true);
+			cleanAllEvent();
 		},
 		getItemColor(itemName){
 			switch(itemName){
@@ -242,6 +251,12 @@ const ViewWilderness = {
 					<Tooltip content="探索手杖:探索结果最多-100" transfer v-if="beginSearch">\
 						<Icon type="md-compass" :color="toolRodCanUseColor" @click="useToolRod"/>\
 					</Tooltip>\
+					<span v-show="charge_con_seal" @click="useSealCleanAllEvent" transfer>\
+						<Divider type="vertical" />\
+						<Tooltip max-width="200" content="利用平衡印章取消所有事件">\
+							<Icon type="md-timer" :color="sealColor"/>\
+						</Tooltip>\
+					</span>\
 				</span>\
 				<!--未开始搜查时的界面-->\
 				<template v-if="!beginSearch">\
