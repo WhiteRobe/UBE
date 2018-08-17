@@ -30,7 +30,7 @@ function gameStart(){
 function gameEnd(isWin){
 	// @click->gameRestart();
 	gp_store.commit('setGamePhase',GAMEPHASE.GAME_END);
-	gameRouter.push('gameEnd');
+	gameRouter.push('/main/end');
 }
 
 // 投骰子
