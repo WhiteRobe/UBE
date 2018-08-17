@@ -814,17 +814,19 @@ const ViewEngineStart = {
 	},
 	methods:{
 		rollDice(){
+			let num1=roll(),num2=roll();
+			gp_store.commit('viewEngine/setDice',[num1,num2]);
 			if(!this.isEngineStarted){
 				gp_store.commit('incHealth',-1);
 				if(this.health<0){
 					error(app,'很不幸, 你在启动引擎的过程中死亡了');
 					return gameEnd(false);
 				}
-				safelyChangeDay(1);
-			}
-			let num1=roll(),num2=roll();
-			gp_store.commit('viewEngine/setDice',[num1,num2]);
-			info(app,'骰子结果:['+num1+','+num2+'],日期+1!');
+				else {
+					safelyChangeDay(1);
+					info(app,'骰子结果:['+num1+','+num2+'],日期+1!');
+				}
+			} else info(app,'骰子结果:['+num1+','+num2+'],引擎启动!');
 		},
 		sacrificeBtn(){
 			if(this.health<=0) return warning(app,'你不能再献祭生命值了!');
