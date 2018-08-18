@@ -317,8 +317,8 @@ const ViewWilderness = {
 							<dice-icon size="small" :num="dice[1]"/>\
 						</span>\
 					</div>\
-					<Divider v-show="!boxAllFilled">\
-						<Tooltip :content="\'点数修正:\'+searchResultAdjust" max-width="200" transfer v-if="searchResultAdjust!=0">\
+					<Divider><!-- v-show="!boxAllFilled" -->\
+						<Tooltip :content="\'点数修正: \'+searchResultAdjust" max-width="200" transfer v-if="searchResultAdjust!=0">\
 							<Badge dot>探索区</Badge>\
 						</Tooltip>\
 						<p v-else>探索区</p>\
