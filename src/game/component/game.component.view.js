@@ -49,7 +49,7 @@ const ViewWelcome = {
 			</template>\
 			<Divider>Created  by <a href="https://blog.csdn.net/shenpibaipao" target="_blank">@身披白袍</a></Divider>\
 			<span v-if="debug">\
-				<Tag>游戏发布于-<Time :time="timeRelease" :interval="1" /></Tag>\
+				<Tag>游戏发布于 <Time :time="timeRelease" :interval="1" /></Tag>\
 			</span>\
 		</div>'
 };
