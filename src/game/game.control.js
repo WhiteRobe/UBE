@@ -483,7 +483,7 @@ function countUnuesdToolSum(){
 }
 // 计算总分
 function countScoreSum(){
-	return 10*countConstrutSum()+5*countConnectedConstrutSum()+5*countConnectedConstrutSum()+10*countTreasureSum()+20*gp_store.state.perfectSearchSum+10*countUnuesdToolSum()+1*gp_store.state.health+50*Number(gp_store.state.engineStarted)+5*(gp_store.state.engineStarted?(22-gp_store.state.today):0);
+	return 10*countConstrutSum()+5*countConnectedConstrutSum()+5*countConnectedConstrutSum()+10*countTreasureSum()+20*gp_store.state.perfectSearchSum+10*countUnuesdToolSum()+1*gp_store.state.health+50*Number(gp_store.state.engineStarted)+5*(gp_store.state.engineStarted?(gp_store.state.doomsdayBegin-gp_store.state.today):0);
 }
 // 计算总连接点
 function countConnectPoiontSum(){
