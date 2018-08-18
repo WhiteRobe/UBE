@@ -121,6 +121,7 @@ function combat(dice1,dice2){
 	var healthLoss = (monster.isATK(dice1)?1:0) + (monster.isATK(dice2)?1:0); // 计算损失生命
 	gp_store.commit('incHealth',0-healthLoss);
 	if(healthLoss!=0) error(app,'损失生命'+healthLoss+'!');
+	let monsterDied = false;
 	if(monster.isHIT(dice1) || monster.isHIT(dice2)){
 		// 怪物死亡
 		if(monster.isKing()){
@@ -140,19 +141,23 @@ function combat(dice1,dice2){
 				if(gp_store.state.debug)console.log('掷点数:'+victoryNum+'. 未取得组件:'+component+'!');
 			}
 		}
-		// gp_store.commit('viewBattle/setMonster',undefined);
-		return endBattle(); // 战斗结束,直接退出
+		monsterDied = true;
 	}
+	
 	if(gp_store.state.health<0) return gameEnd(false); // 直接死亡
 	else if(gp_store.state.health == 0){ // 昏迷(昏迷前干死敌人可以先取得物品)
 		goBackWorkShop();
 		recoverFromUnconsciousness();
 	} else {
-		// 战斗未结束-继续战斗
-		if(healthLoss==0) info(app,'新一轮的战斗开始了!');
-		gp_store.commit('viewBattle/rstDice');
-		gp_store.commit('viewBattle/setToolWandUsed',false); // 清空工具使用效果
+		if(monsterDied) return endBattle(); // 战斗结束,直接退出
+		else {
+			// 战斗未结束-继续战斗
+			if(healthLoss==0) info(app,'新一轮的战斗开始了!'); // 无人受伤的提示
+			gp_store.commit('viewBattle/rstDice');
+			gp_store.commit('viewBattle/setToolWandUsed',false); // 清空工具使用效果
+		}
 	}
+	
 }
 
 // 战斗结束
