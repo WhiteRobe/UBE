@@ -49,6 +49,10 @@ const InfoVersion = {
 			],
 			data : [
 				{
+					section:'游戏版本',
+					value:gp_store.state.version
+				},
+				{
 					section:'作者',
 					value:'身披白袍'
 				},
@@ -138,15 +142,15 @@ const InfoScoringRulesTable = {
 					key:'total',
 					align:'center',
 					render:(h,p)=>{
-						if(p.index==0)return h('span','x'+(this.constructSum*10));
-						else if(p.index==1)return h('span','x'+(this.startedConstrut*5));
-						else if(p.index==2)return h('span','x'+(this.connectedConstrut*5));
-						else if(p.index==3)return h('span','x'+(this.countTreasure*10));
-						else if(p.index==4)return h('span','x'+(this.perfectSearch*20));
-						else if(p.index==5)return h('span','x'+(this.unuesdTool*10));
-						else if(p.index==6)return h('span','x'+(this.remainHealth*1));
-						else if(p.index==7)return h('span','x'+(this.engineStarted*50));
-						else if(p.index==8)return h('span','x'+(this.remainDays*5));
+						if(p.index==0)return h('span',this.constructSum*10);
+						else if(p.index==1)return h('span',this.startedConstrut*5);
+						else if(p.index==2)return h('span',this.connectedConstrut*5);
+						else if(p.index==3)return h('span',this.countTreasure*10);
+						else if(p.index==4)return h('span',this.perfectSearch*20);
+						else if(p.index==5)return h('span',this.unuesdTool*10);
+						else if(p.index==6)return h('span',this.remainHealth*1);
+						else if(p.index==7)return h('span',this.engineStarted*50);
+						else if(p.index==8)return h('span',this.remainDays*5);
 						else if(p.index==9)return h('b',{style:{color:'#19BE6B'}},this.totalScore);
 						else return h('span','未知渲染序列');
 					}
@@ -693,7 +697,7 @@ const InfoGameEnd = {
 			<Alert type="success" v-if="engineStarted">你成功启动了引擎或拯救了星球!</Alert>\
 			<Alert type="error" v-else>很不幸，你没能生还下来!</Alert>\
 			<Divider dashed/>\
-			<Button type="warning" to="/" long @click="gameRestart">重启游戏</Button>\
+			<Button type="info" to="/" long @click="gameRestart">重启游戏</Button>\
 			<Divider dashed/>\
 			<info-scoring-rules-table/>\
 		</div>'
