@@ -16,7 +16,7 @@ const BADGE_COLOR_CLASS = ['lightblue-badge-alone','green-badge-alone','orange-b
 const CONSTRUCT_DETAIL = ['消耗任意3个组件,为一个工具充能(仅能用一次)','与精神类怪物对战时所有骰子+1',
 							'在厉岩峡谷与扼根沼泽探索结果最多可-10','在苍髯群峰与炎熔噬窟探索结果最多可-10',
 							'取消所有地区的事件(仅能用一次)','昏迷后的恢复时间缩减为4天'];// 依赖于 CONSTRUCT_NAME 的顺序
-const TREASURE_DETAIL = ['所有怪物攻击范围-1','每启动一个转置, 上帝之手+1能量','可以无视遭遇战',
+const TREASURE_DETAIL = ['所有怪物攻击范围-1','每度过一天, 上帝之手+1能量','可以无视遭遇战',
 			'每度过一天便+1点生命','对所有怪物的命中范围+1','可以自动完成装置连接, 连接值为1']; // 依赖于 TREASURE_NAME 的顺序
 const TOOL_DETAIL = ['启动装置时+2能量','战斗时对所有骰子+2','探索时探索结果最多-100']; // // 依赖于 TOOL_NAME 的顺序
 const WHITESPACE_i18n = "&#12288;";// 中文全角空格 
