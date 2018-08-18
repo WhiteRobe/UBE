@@ -59,6 +59,8 @@ const ViewWilderness = {
 	computed:{
 		seal_used : () => gp_store.state.seal_used,
 		charge_con_seal : () => gp_store.state.charge_con_seal,
+		charge_con_battery : () => gp_store.state.charge_con_battery,
+		battery_used : () => gp_store.state.battery_used,
 		wilderness : ()=> gp_store.state.viewWilderness.wilderness,
 		tre_moonlace : ()=> inventory.state.tre_moonlace, // 月光荧丝 跳过战斗
 		tool_rod : ()=>  gp_store.state.tool_rod,
@@ -133,11 +135,15 @@ const ViewWilderness = {
 		},
 		sealColor(){
 			return !this.seal_used?"#19be6b":"#ed4014";
+		},
+		batteryColor(){
+			return !this.battery_used?"#19be6b":"#ed4014";
 		}
 	},
 	methods:{
 		useToolRod(){
 			if(!this.tool_rod) return warning(app,TOOL_NAME[2]+'未充能!');
+			if(this.toolRodUsed) return warning(app,TOOL_NAME[2]+'在每次探索中最多使用一次!');
 			gp_store.commit('viewWilderness/setToolRodUsed',true);
 			gp_store.commit('setRod',false);
 			info(app,TOOL_NAME[2]+':'+getToolDetail(TOOL_NAME[2]));
@@ -215,11 +221,21 @@ const ViewWilderness = {
 			}
 		},
 		getTreasureDetail : getTreasureDetail,
-		getConstructDetail : getConstructDetail
+		getConstructDetail : getConstructDetail,
+		readyToChargeTool(){
+			if(gp_store.state.tool_charm && gp_store.state.tool_wand && gp_store.state.tool_rod)
+				return warning(app,'没有需要充能的物品!');
+			else if(this.battery_used) return warning(app,'水晶电池已使用过！');
+			let componentsSum = 0;
+			for(var i of COMPONENT_NAME)  componentsSum += getComponentNum(i);
+			if(componentsSum<3) return warning(app,'组件数目不足！');
+			else gp_store.commit('setBatteryUsingModalShow',true);
+		},
 	},
 	components:{
 		'monster-info-cellgroup':InfoMonsterCellGroup,
-		'dice-icon':DiceIcon
+		'dice-icon':DiceIcon,
+		'battery-pop-modal':BatteryPopModal
 	},
 	template:
 		'<div>\
@@ -251,6 +267,12 @@ const ViewWilderness = {
 					<Tooltip content="探索手杖:探索结果最多-100" transfer v-if="beginSearch">\
 						<Icon type="md-compass" :color="toolRodCanUseColor" @click="useToolRod"/>\
 					</Tooltip>\
+					<span v-show="charge_con_battery" @click="readyToChargeTool">\
+						<Divider type="vertical" />\
+						<Tooltip max-width="200" content="利用水晶电池给工具充能" transfer>\
+							<Icon type="md-battery-charging" :color="batteryColor"/>\
+						</Tooltip>\
+					</span>\
 					<span v-show="charge_con_seal" @click="useSealCleanAllEvent" transfer>\
 						<Divider type="vertical" />\
 						<Tooltip max-width="200" content="利用平衡印章取消所有事件">\
@@ -320,6 +342,7 @@ const ViewWilderness = {
 						</ButtonGroup>\
 					</div>\
 				</template>\
+				<battery-pop-modal/><!--水晶电池充电-->\
 			</Card>\
 		</div>'
 };
@@ -332,6 +355,8 @@ const ViewBattle = {
 		}
 	},
 	computed:{
+		charge_con_battery : () => gp_store.state.charge_con_battery,
+		battery_used : () => gp_store.state.battery_used,
 		monster : ()=> gp_store.state.viewBattle.monster,
 		tool_wand : ()=> gp_store.state.tool_wand,
 		toolWandUsed : ()=> gp_store.state.viewBattle.toolWandUsed,
@@ -359,6 +384,9 @@ const ViewBattle = {
 		compassEffected(){
 			return gp_store.state.charge_con_chassis && this.monster.isSpirit;
 		},
+		batteryColor(){
+			return !this.battery_used?"#19be6b":"#ed4014";
+		},
 	},
 	methods:{
 		useToolWand(){
@@ -382,7 +410,19 @@ const ViewBattle = {
 		getRandomMonsterPic(){
 			let id = this.randomSeedCache;
 			return "./res/monsters/monster_"+id+".png"
-		}
+		},
+		readyToChargeTool(){
+			if(gp_store.state.tool_charm && gp_store.state.tool_wand && gp_store.state.tool_rod)
+				return warning(app,'没有需要充能的物品!');
+			else if(this.battery_used) return warning(app,'水晶电池已使用过！');
+			let componentsSum = 0;
+			for(var i of COMPONENT_NAME)  componentsSum += getComponentNum(i);
+			if(componentsSum<3) return warning(app,'组件数目不足！');
+			else gp_store.commit('setBatteryUsingModalShow',true);
+		},
+	},
+	components:{
+		'battery-pop-modal':BatteryPopModal
 	},
 	template:
 		'<div>\
@@ -402,6 +442,12 @@ const ViewBattle = {
 					<Tooltip content="麻痹魔杖:战斗时+2到骰子结果" transfer>\
 						<Icon type="md-color-wand" :color="toolWandCanUseColor" @click="useToolWand"/>\
 					</Tooltip>\
+					<span v-show="charge_con_battery" @click="readyToChargeTool">\
+						<Divider type="vertical" />\
+						<Tooltip max-width="200" content="利用水晶电池给工具充能" transfer>\
+							<Icon type="md-battery-charging" :color="batteryColor"/>\
+						</Tooltip>\
+					</span>\
 				</span>\
 				<div style="text-align:center"><!--怪物图像-->\
 					<img :src="getRandomMonsterPic()" height="150" style="transform:scale(0.8)" v-if="monsterPicOn"/>\
@@ -437,6 +483,7 @@ const ViewBattle = {
 				</div>\
 				<Button shape="circle" long type="info" icon="md-color-filter" @click="comfirmBattleBtn">确定</Button>\
 			</Card>\
+			<battery-pop-modal/><!--水晶电池充电-->\
 		</div>'
 };
 
@@ -901,9 +948,6 @@ const ViewEngineStart = {
 const ViewWorkshop = {
 	data() {
 		return {
-			iTargetKeys : [], // 充能要使用的组件列表
-			selectedTool : undefined, // 要充能的道具
-			batteryUsingModalShow : false, // 控制显示水晶电池充能Modal
 			workShopButtons: (h) => {
                     return h('span', [
                         h('Icon', {
@@ -965,27 +1009,6 @@ const ViewWorkshop = {
 		showText(){
 			if(this.clientWidth>this.textShowWidth) return true;
 			else return false;
-		},
-		// 水晶电池充电时显示的所有数据
-		iData(){ // 背包中的组件
-			var data = [],index=0;
-			for(var i of COMPONENT_NAME){
-				var sum = getComponentNum(i);
-				for(var t=0;t<sum;t++){
-					data.push({
-						key:index++,
-						label:i,
-					});
-				}
-			}
-			return data;
-		},
-		toolList(){ // 可以充能的工具
-			let list = [];
-			if(!gp_store.state.tool_charm) list.push(TOOL_NAME[0]);
-			if(!gp_store.state.tool_wand) list.push(TOOL_NAME[1]);
-			if(!gp_store.state.tool_rod) list.push(TOOL_NAME[2]);
-			return list;
 		}
 	},
 	methods:{
@@ -1003,7 +1026,7 @@ const ViewWorkshop = {
 			let componentsSum = 0;
 			for(var i of COMPONENT_NAME)  componentsSum += getComponentNum(i);
 			if(componentsSum<3) return warning(app,'组件数目不足！');
-			else this.batteryUsingModalShow = true;
+			else gp_store.commit('setBatteryUsingModalShow',true);
 			// success(app,'使用水晶电池进行工具充能完毕！');
 			// gp_store.commit('setBatteryUsed',true);
 			// To do Charge
@@ -1054,39 +1077,12 @@ const ViewWorkshop = {
 		selectCell(name){
 			// 选中连接单元格
 			this.constructReadyToConnect(name);
-		},
-		// ---  水晶电池  ---//
-		rowDataRender(item){ // 水晶电池充电时的渲染函数
-			return item.label;
-		},
-		handleChange(targetKeys, direction, moveKeys){ // 水晶电池充电时的句柄
-			this.iTargetKeys = targetKeys;
-			console.log(targetKeys,direction,moveKeys);
-		},
-		confirmCharge(){ // 水晶电池充电
-			if(!this.selectedTool) warning(app,'请选中要充能的工具');
-			else if(this.iTargetKeys.length<=0) this.cancelCharge();
-			else if(this.iTargetKeys.length>3) warning(app,'只需要提交3个组件');
-			else if(this.iTargetKeys.length<3) warning(app,'需要提交3个组件');
-			else{
-				let comsumeList = [];
-				for(var i of this.iTargetKeys)comsumeList.push(this.iData[i].label);
-				for(var i2 of comsumeList) consumeComponent(i2);
-				gp_store.dispatch('chargeItem',this.selectedTool);
-				success(app,'['+this.selectedTool+']充能完毕!');
-				gp_store.commit('setBatteryUsed',true);
-				this.cancelCharge();
-			}
-		},
-		cancelCharge(){ // 水晶电池取消充电
-			this.iTargetKeys = [];
-			this.batteryUsingModalShow = false;
-			this.selectedTool = undefined;
 		}
 	},
 	components:{
 		'workshop-construct-tag':WorkshopConstructTag,
-		'workshop-construct-connect-unit':WorkshopConstructConnectUnit
+		'workshop-construct-connect-unit':WorkshopConstructConnectUnit,
+		'battery-pop-modal':BatteryPopModal
 	},
 	template:
 		'<div>\
@@ -1144,25 +1140,7 @@ const ViewWorkshop = {
 			</div>\
 			<Divider dashed/>\
 			<!--水晶电池充能-->\
-			<Modal :styles="{top: \'10px\'}" v-model="batteryUsingModalShow" title="进行道具充能"\
-				:footer-hide="true" :closable="false" :mask-closable="false">\
-				<Card :dis-hover="true">\
-					<div style="text-align:center">\
-						<Select v-model="selectedTool" style="width:200px" placeholder="选择要充能的工具">\
-							<Option v-for="(item,k) in toolList" :value="item" :key="k">{{item}}</Option>\
-						</Select>\
-					</div>\
-					<Divider dashed/>\
-					<Transfer :data="iData" :target-keys="iTargetKeys" \
-					 :render-format="rowDataRender" :titles="[\'已有组件\',\'要消耗的组件\']"\
-					 @on-change="handleChange"/>\
-					<Divider/>\
-					<div style="text-align:center">\
-						<Button size="default" type="success" @click="confirmCharge">确定</Button>\
-						<Button size="default" type="default" @click="cancelCharge">取消</Button>\
-					</div>\
-				</Card>\
-			</Modal>\
+			<battery-pop-modal/>\
 		</div>'
 };
 
