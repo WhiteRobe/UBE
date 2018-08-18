@@ -1115,9 +1115,12 @@ const ViewWorkshop = {
 				<Tabs type="card">\
 					<TabPane :label="workShopButtons"><!--render渲染标签-->\
 						<Card :dis-hover="true">\
-							<Button shape="circle" type="primary" long icon="md-map" @click="gotoMap">返回地图&nbsp;</Button>\
+							<Button shape="circle" type="primary" long icon="md-map" @click="gotoMap">返回地图&nbsp;</Button><br/><br/>\
 							<Button shape="circle" type="success" long icon="md-beer" @click="restInWorkshop">休息一天&nbsp;</Button>\
-							<Button shape="circle" type="warning" long icon="md-infinite" @click="finalStart" v-if="canEngineFinalStart">启动引擎&nbsp;</Button>\
+							<template v-if="canEngineFinalStart">\
+								<br/><br/>\
+								<Button shape="circle" type="warning" long icon="md-infinite" @click="finalStart" >启动引擎&nbsp;</Button>\
+							</template>\
 						</Card>\
 					</TabPane>\
 					<!--启动装置一览-->\
