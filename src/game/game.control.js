@@ -253,6 +253,10 @@ function nextDay(){
 		gp_store.commit('incHealth',1); // 亚龙之鳞效果
 		info(app,TREASURE_NAME[3]+'触发,生命值+1!');
 	}
+	if(inventory.state.tre_bracelet){
+		gp_store.commit('incGodsHand',1); // 雷神手镯效果
+		info(app,TREASURE_NAME[1]+'触发,上帝之手能力+1!');
+	}
 	// else if(gp_store.state.today>=gp_store.state.doomsdayBegin) gameEnd(false);
 }
 
