@@ -33,8 +33,8 @@ const ViewWelcome = {
 				欢迎来到单人桌游——\
 				<a href="https://www.boardgamegeek.com/boardgame/75223/utopia-engine" target="_blank">《乌托邦引擎》</a></br></br>\
 				<Alert>在这个即将毁灭的世界中，您将扮演一名名为Isodoros的科学家，为了拯救世界而努力。<br/>您将在在丛林、深渊中探索，搜集部件来组成乌托邦引擎，从而终止世界末日的发生。<br/>世界摇摇欲坠，而你孑然前行。</Alert>\
-				Game Designer-<Tag>Nick Hayes</Tag></br>\
-				当前游戏版本-<Tag>{{version}}</Tag>\
+				Game Designer <Tag>Nick Hayes</Tag></br>\
+				当前游戏版本 <Tag>{{version}}</Tag>\
 				<Divider dashed v-if="!musicModeOn || !monsterPicOn"/>\
 				<Button shape="circle" type="info" v-if="!musicModeOn" @click="gameMusicModeOn">启用音乐</Button>\
 				<Button shape="circle" type="warning" v-if="!monsterPicOn" @click="gameMonsterPicOn">启用图片</Button>\
@@ -49,7 +49,7 @@ const ViewWelcome = {
 			</template>\
 			<Divider>Created  by <a href="https://blog.csdn.net/shenpibaipao" target="_blank">@身披白袍</a></Divider>\
 			<span v-if="debug">\
-				游戏发布于-<Tag><Time :time="timeRelease" :interval="1" /></Tag>\
+				<Tag>游戏发布于-<Time :time="timeRelease" :interval="1" /></Tag>\
 			</span>\
 		</div>'
 };
