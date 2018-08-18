@@ -29,6 +29,7 @@ const gp_store = new Vuex.Store({
 		trash : 0, // 垃圾桶中垃圾数量
 		perfectSearchSum : 0, // 完美探索次数
 		engineStarted : false, // 引擎是否启动
+		batteryUsingModalShow : false, // 电池充电界面是否显示
 		
 		connectPoiontLead : 0,// 铅-连接点
 		connectPoiontSilica : 0, // 硅土-连接点
@@ -71,6 +72,7 @@ const gp_store = new Vuex.Store({
 		incTrash : (state,n) => state.trash+n<10?state.trash+=n:state.trash=10,
 		incPerfectSearchSum : (state,n) => state.perfectSearchSum+=n,
 		setEngineStarted: (state,b) => state.engineStarted=b,
+		setBatteryUsingModalShow: (state,b) => state.batteryUsingModalShow=b,
 		
 		incConnectPoiontLead : (state,n) => state.connectPoiontLead+=n,
 		incConnectPoiontSilica : (state,n) => state.connectPoiontSilica+=n,
@@ -120,6 +122,7 @@ const gp_store = new Vuex.Store({
 			state.today = 0;
 			state.trash = 0; // 垃圾数量
 			state.perfectSearchSum = 0; // 完美探索次数
+			batteryUsingModalShow = false; // 充电电池界面是否显示
 			state.engineStarted = false; // 引擎是否启动
 			state.connectPoiontLead = 0;// 铅-连接点
 			state.connectPoiontSilica = 0; // 硅土-连接点
