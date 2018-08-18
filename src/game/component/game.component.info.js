@@ -220,7 +220,6 @@ const InfoScoringRulesTable = {
 		this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 1; // 设置table高度
 	},
 	computed:{
-		doomsdayBegin : () => gp_store.state.doomsdayBegin,
 		constructSum : countConstrutSum,
 		startedConstrut : countStartedConstrutSum,
 		connectedConstrut: countConnectedConstrutSum,
@@ -229,7 +228,7 @@ const InfoScoringRulesTable = {
 		unuesdTool : countUnuesdToolSum,
 		remainHealth : () => gp_store.state.health,
 		engineStarted : () => Number(gp_store.state.engineStarted),
-		remainDays : () => gp_store.state.engineStarted?this.doomsdayBegin-gp_store.state.today:0,
+		remainDays : () => gp_store.state.engineStarted?gp_store.state.doomsdayBegin-gp_store.state.today:0,
 		totalScore : countScoreSum
 	},
 	template : '<div><Table stripe :columns="columns" :data="data" ref="table" :height="tableHeight"></Table></div>'
