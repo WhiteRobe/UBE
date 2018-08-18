@@ -479,3 +479,87 @@ const DiceIcon = {
 	},
 	template:'<Avatar :size="size" :style="{background: getColor}">{{num}}</Avatar>'
 };
+
+const BatteryPopModal = {
+	data(){
+		return {
+			iTargetKeys : [], // 充能要使用的组件列表
+			selectedTool : undefined, // 要充能的道具
+		}
+	},
+	computed:{
+		batteryUsingModalShow :()=> gp_store.state.batteryUsingModalShow,
+		// 水晶电池充电时显示的所有数据
+		iData(){ // 背包中的组件
+			var data = [],index=0;
+			for(var i of COMPONENT_NAME){
+				var sum = getComponentNum(i);
+				for(var t=0;t<sum;t++){
+					data.push({
+						key:index++,
+						label:i,
+					});
+				}
+			}
+			return data;
+		},
+		toolList(){ // 可以充能的工具
+			let list = [];
+			if(!gp_store.state.tool_charm) list.push(TOOL_NAME[0]);
+			if(!gp_store.state.tool_wand) list.push(TOOL_NAME[1]);
+			if(!gp_store.state.tool_rod) list.push(TOOL_NAME[2]);
+			return list;
+		}
+	},
+	methods:{
+		// ---  水晶电池  ---//
+		rowDataRender(item){ // 水晶电池充电时的渲染函数
+			return item.label;
+		},
+		handleChange(targetKeys, direction, moveKeys){ // 水晶电池充电时的句柄
+			this.iTargetKeys = targetKeys;
+			console.log(targetKeys,direction,moveKeys);
+		},
+		confirmCharge(){ // 水晶电池充电
+			if(!this.selectedTool) warning(app,'请选中要充能的工具');
+			else if(this.iTargetKeys.length<=0) this.cancelCharge();
+			else if(this.iTargetKeys.length>3) warning(app,'只需要提交3个组件');
+			else if(this.iTargetKeys.length<3) warning(app,'需要提交3个组件');
+			else{
+				let comsumeList = [];
+				for(var i of this.iTargetKeys)comsumeList.push(this.iData[i].label);
+				for(var i2 of comsumeList) consumeComponent(i2);
+				gp_store.dispatch('chargeItem',this.selectedTool);
+				success(app,'['+this.selectedTool+']充能完毕!');
+				gp_store.commit('setBatteryUsed',true);
+				this.cancelCharge();
+			}
+		},
+		cancelCharge(){ // 水晶电池取消充电
+			this.iTargetKeys = [];
+			gp_store.commit('setBatteryUsingModalShow',false);
+			this.selectedTool = undefined;
+		}
+	},
+	template:
+		'<!--水晶电池充能-->\
+		<Modal :styles="{top: \'10px\'}" :value="batteryUsingModalShow" title="进行道具充能"\
+			:footer-hide="true" :closable="false" :mask-closable="false">\
+			<Card :dis-hover="true">\
+				<div style="text-align:center">\
+					<Select v-model="selectedTool" style="width:200px" placeholder="选择要充能的工具">\
+						<Option v-for="(item,k) in toolList" :value="item" :key="k">{{item}}</Option>\
+					</Select>\
+				</div>\
+				<Divider dashed/>\
+				<Transfer :data="iData" :target-keys="iTargetKeys" \
+				 :render-format="rowDataRender" :titles="[\'已有组件\',\'要消耗的组件\']"\
+				 @on-change="handleChange"/>\
+				<Divider/>\
+				<div style="text-align:center">\
+					<Button size="default" type="success" @click="confirmCharge">确定</Button>\
+					<Button size="default" type="default" @click="cancelCharge">取消</Button>\
+				</div>\
+			</Card>\
+		</Modal>'
+};
