@@ -391,6 +391,7 @@ const ViewBattle = {
 	methods:{
 		useToolWand(){
 			if(!this.tool_wand) return warning(app,TOOL_NAME[1]+'未充能!');
+			if(this.toolWandUsed) return warning(app,TOOL_NAME[1]+'在每个战斗回合中最多使用一次!');
 			gp_store.commit('viewBattle/setToolWandUsed',true);
 			gp_store.commit('setWand',false);
 			info(app,TOOL_NAME[1]+':'+getToolDetail(TOOL_NAME[1]));
