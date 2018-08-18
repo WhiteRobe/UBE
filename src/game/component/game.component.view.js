@@ -309,29 +309,33 @@ const ViewWilderness = {
 						</ButtonGroup>\
 					</div>\
 				</template>\
-				<template v-else>\
+				<div v-else>\
 					<div style="text-align:center">\
-						{{canNextRoll}}<!--触发器-->\
-						<span @click="cgDice" v-show="!boxAllFilled"><!--探险投骰-->\
+						{{canNextRoll}}<!--触发器--->\
+						<span @click="cgDice" v-show="!boxAllFilled"><!--探险投骰--->\
 							<dice-icon size="large" :num="dice[0]"/>\
 							<dice-icon size="small" :num="dice[1]"/>\
 						</span>\
-						<!--<Button type="success" v-show="canNextRoll" long icon="md-barcode" @click="nextRoll">继续</Button>-->\
-						<Divider v-show="!boxAllFilled">探索区</Divider>\
-						<div style="text-align:center">\
-							<table border="0" align="center">\
-							  <tr>\
-								<th @click="selectDiceBox(0)"><dice-icon :num="diceBox[0]" size="default"/></th>\
-								<th @click="selectDiceBox(1)"><dice-icon :num="diceBox[1]" size="default"/></th>\
-								<th @click="selectDiceBox(2)"><dice-icon :num="diceBox[2]" size="default"/></th>\
-							  </tr>\
-							  <tr>\
-								<th @click="selectDiceBox(3)"><dice-icon :num="diceBox[3]" size="default"/></th>\
-								<th @click="selectDiceBox(4)"><dice-icon :num="diceBox[4]" size="default"/></th>\
-								<th @click="selectDiceBox(5)"><dice-icon :num="diceBox[5]" size="default"/></th>\
-							  </tr>\
-							</table>\
-						</div>\
+					</div>\
+					<Divider v-show="!boxAllFilled">\
+						<Tooltip :content="\'点数修正:\'+searchResultAdjust" max-width="200" transfer v-if="searchResultAdjust!=0">\
+							<Badge dot>探索区</Badge>\
+						</Tooltip>\
+						<p v-else>探索区</p>\
+					</Divider>\
+					<div style="text-align:center">\
+						<table border="0" align="center">\
+						  <tr>\
+							<th @click="selectDiceBox(0)"><dice-icon :num="diceBox[0]" size="default"/></th>\
+							<th @click="selectDiceBox(1)"><dice-icon :num="diceBox[1]" size="default"/></th>\
+							<th @click="selectDiceBox(2)"><dice-icon :num="diceBox[2]" size="default"/></th>\
+						  </tr>\
+						  <tr>\
+							<th @click="selectDiceBox(3)"><dice-icon :num="diceBox[3]" size="default"/></th>\
+							<th @click="selectDiceBox(4)"><dice-icon :num="diceBox[4]" size="default"/></th>\
+							<th @click="selectDiceBox(5)"><dice-icon :num="diceBox[5]" size="default"/></th>\
+						  </tr>\
+						</table>\
 						<br/>\
 						<Alert type="info">探索结果为:{{searchResult[0]}}{{searchResult[1]}}</Alert>\
 						<Divider dashed/>\
@@ -341,7 +345,7 @@ const ViewWilderness = {
 							<Button type="primary" icon="md-compass" @click="useToolRod" v-if="tool_rod">探索手杖</Button>\
 						</ButtonGroup>\
 					</div>\
-				</template>\
+				</div>\
 				<battery-pop-modal/><!--水晶电池充电-->\
 			</Card>\
 		</div>'
@@ -554,10 +558,6 @@ const ViewConstructStart ={
 			gp_store.commit('incGodsHand',powerSum-4);
 			gp_store.dispatch('chargeItem',this.chargingConstruct);
 			success(app,this.chargingConstruct+'已启动!');
-			if(inventory.state.tre_bracelet){
-				gp_store.commit('incGodsHand',1); // 雷神手镯
-				info(app,TREASURE_NAME[1]+'触发,上帝之手能量+1!');
-			}
 			this.viewDataReset();
 			gotoWorkShop();
 		},
