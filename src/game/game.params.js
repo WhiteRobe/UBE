@@ -67,7 +67,7 @@ const gp_store = new Vuex.Store({
 		setMonsterPicOn : (state) => state.monsterPicOn = true,
 		incHealth : (state,n) => state.health+n<6?state.health+=n:state.health=6,
 		incGodsHand : (state,n) => state.godsHand+n<6?state.godsHand+=n:state.godsHand=6,
-		incDoomsdayBegin : (state,n) => state.doomsdayBegin+n<21?state.doomsdayBegin+=n:state.doomsdayBegin=21,
+		incDoomsdayBegin : (state,n) => state.doomsdayBegin+n<22?state.doomsdayBegin+=n:state.doomsdayBegin=22,// 拯救日
 		incToday : (state,n) => state.today+n<21?state.today+=n:state.today=21,
 		incTrash : (state,n) => state.trash+n<10?state.trash+=n:state.trash=10,
 		incPerfectSearchSum : (state,n) => state.perfectSearchSum+=n,
