@@ -12,5 +12,6 @@
 乌托邦引擎是由[Nick Hayes](https://www.boardgamegeek.com/boardgame/75223/utopia-engine)设计的一款单人桌面游戏。
 其子代《乌托邦引擎:怪物猎人》已在2013年出版。
 
-#### 在线游玩
-[https://shenpibaipao.gitee.io/ube](https://shenpibaipao.gitee.io/ube)(建议使用Chrome)
+#### 在线游玩(建议使用Chrome))
+[https://shenpibaipao.gitee.io/ube](https://shenpibaipao.gitee.io/ube).
+或Github源IO页面：[https://whiterobe.github.io/UBE/](https://whiterobe.github.io/UBE/)
