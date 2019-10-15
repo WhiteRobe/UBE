@@ -1,5 +1,7 @@
 # 乌托邦引擎
 
+<a href="https://zenodo.org/badge/latestdoi/193203054"><img src="https://zenodo.org/badge/193203054.svg" alt="DOI"></a>
+
 #### 项目介绍
 这是一个适配于手机等移动端的在线桌游电子化Web项目，采用Vue(及其插件)+iView作为开发框架。
 
