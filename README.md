@@ -15,5 +15,5 @@
 其子代《乌托邦引擎:怪物猎人》已在2013年出版。
 
 #### 在线游玩(建议使用Chrome)
-[https://shenpibaipao.gitee.io/ube](https://shenpibaipao.gitee.io/ube).
+[https://shenpibaipao.gitee.io/ube](https://shenpibaipao.gitee.io/ube)(国内推荐).
 或Github源IO页面：[https://whiterobe.github.io/UBE/](https://whiterobe.github.io/UBE/)
